@@ -92,6 +92,14 @@ public:
     return iterator_t(NIL, 0, manager_data);
   }
 
+  int get_n_reads () const {
+    return manager_data->get_n_reads() + manager_header->get_n_reads();
+  }
+
+  int get_n_writes () const {
+    return manager_data->get_n_writes() + manager_header->get_n_writes();
+  }
+
 private:
   bool valid_head;
   value_t head;

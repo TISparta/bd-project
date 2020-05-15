@@ -147,6 +147,7 @@ TEST (custom_struct, trait_1) {
     int id;
     int edad;
     int n_mascotas;
+    char name[10];
   };
 
   class Trait {
@@ -183,6 +184,11 @@ TEST (custom_struct, trait_1) {
     user.id = id;
     user.edad = Random::generate_value <int> (1, 100);
     user.n_mascotas = Random::generate_value <int> (1, 10);
+    std::string name;
+    for (int len = 0; len < 6; len++) {
+      name += Random::generate_value <char> ();
+    }
+    strcpy(user.name, name.c_str());
     users.push_back(user);
     tree.insert(user);
   }

@@ -1,8 +1,13 @@
+# venv
+performance/venv/
+
 # persistency
 persistency/*.bin
 
 # executables
 test/bplustree-test
+performance/measures
+join/join
 
 # vim files
 *.swp
