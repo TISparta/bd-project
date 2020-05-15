@@ -56,7 +56,7 @@ public:
     return true;
   }
 
-  bool find (const value_t& value) {
+  bool find (const value_t& value) const {
     iterator_t it = gteq(value);
     if (it != end()) {
       return not it.fail() and (get_key(*it) == get_key(value));
@@ -64,7 +64,7 @@ public:
     return false;
   }
 
-  iterator_t gteq (const value_t value) {
+  iterator_t gteq (const value_t value) const {
     iterator_t it = gteq(header.root_address, value);
     if (it != end()) {
       if (it.fail()) {
@@ -81,7 +81,7 @@ public:
     return out;
   }
 
-  iterator_t begin () {
+  iterator_t begin () const {
     if (not valid_head) {
       return iterator_t(NIL, 0, manager_data);
     }
@@ -178,7 +178,7 @@ private:
     manager_header->write <Header> (0, header);
   }
 
-  iterator_t gteq (address node_address, const value_t& value) {
+  iterator_t gteq (address node_address, const value_t& value) const {
     if (node_address == NIL) {
       return iterator_t(node_address, 0, manager_data);
     }
@@ -194,13 +194,13 @@ private:
     return gteq(pnode.children[pos], value);
   }
 
-  void print_tree (std::ostream& out) {
+  void print_tree (std::ostream& out) const {
     if (print() == TREE_PRINT) {
       print_tree(header.root_address, 0, out);
     }
   }
 
-  void print_tree (address node_address, int level, std::ostream& out) {
+  void print_tree (address node_address, int level, std::ostream& out) const {
     node pnode;
     manager_data->read <node> (node_address, pnode);
     int pos = 0;
@@ -215,14 +215,14 @@ private:
     }
   }
 
-  void print_inorder (std::ostream& out) {
+  void print_inorder (std::ostream& out) const {
     if (print() == INORDER_PRINT) {
       print_inorder(header.root_address, out);
       out << '\n';  
     }
   }
 
-  void print_inorder (address node_address, std::ostream& out) {
+  void print_inorder (address node_address, std::ostream& out) const {
     node pnode;
     manager_data->read <node> (node_address, pnode);
     std::size_t pos = 0;
