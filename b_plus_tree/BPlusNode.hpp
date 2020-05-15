@@ -1,42 +1,48 @@
 #pragma once
 
 #include <vector>
+#include "Macros.hpp"
 
 template <typename Trait, int BTREE_ORDER>
 class BPlusNode {
 public:
   using value_t = typename Trait::value_t;
-  using container_t = typename Trait::container_t;
+  using key_t = typename Trait::key_t;
+  using key_g = typename Trait::key_g;
+  using address = typename Trait::address;
   using node = BPlusNode <Trait, BTREE_ORDER>;
-  using child_container_t = std::vector <node*>;
 
   std::size_t count;
-  container_t data;
-  child_container_t children;
-  node* right;
+  value_t data[BTREE_ORDER + 1];
+  address children[BTREE_ORDER + 2];
+  address right;
   bool is_leaf;
-
-  enum state {
-    BT_OVERFLOW,
-    BT_UNDERFLOW,
-    NORMAL
-  };
 
   BPlusNode () {
     count = 0;
-    data.resize(BTREE_ORDER + 1);
-    children.resize(BTREE_ORDER + 2, nullptr);
-    right = nullptr;
+    std::fill(children, children + BTREE_ORDER + 2, NIL);
+    right = NIL;
     is_leaf = true;
   }
 
-  ~BPlusNode () {
-    for (auto child: children) {
-      if (child) {
-        delete child;
+  ~BPlusNode () {}
+
+  std::size_t search (const value_t& value) const {
+    key_g get_key;
+    if (count == 0 or get_key(data[0]) >= get_key(value)) {
+      return 0;
+    }
+    std::size_t low = 0;
+    std::size_t high = count - 1;
+    while (low != high) {
+      std::size_t mid = (low + high + 1) >> 1;
+      if (get_key(data[mid]) < get_key(value)) {
+        low = mid;
+      } else {
+        high = mid - 1;
       }
     }
-    children.clear();
+    return low + 1;
   }
 
   void insert (std::size_t pos, const value_t& value) {

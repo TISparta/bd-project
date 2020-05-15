@@ -8,18 +8,8 @@ template <typename T>
 class Trait1 {
 public:
   using value_t = T;
-  using container_t = std::vector <value_t>;
-
-  class SimpleSearch {
-  public:
-    std::size_t operator () (const container_t& data, std::size_t count, const value_t& value) const {
-      std::size_t pos = 0;
-      while (pos < count and data[pos] < value) {
-        pos++;
-      }
-      return pos;
-    }
-  };
+  using key_t = T;
+  using address = int;
 
   class TreePrint {
   public:
@@ -28,6 +18,13 @@ public:
     }
   };
 
-  using functor_t = SimpleSearch;
+  class Key {
+  public:
+    key_t operator () (value_t value) const {
+      return value;
+    }
+  };
+
   using print_t = TreePrint;
+  using key_g = Key;
 };
