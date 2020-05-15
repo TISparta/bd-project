@@ -10,8 +10,8 @@
 const int MIN_VAL = -1000;
 const int MAX_VAL = +1000;
 
-const std::string header_path = "../persistency/header_test.hpp";
-const std::string data_path = "../persistency/data_test.hpp";
+const std::string header_path = "../persistency/header_test.bin";
+const std::string data_path = "../persistency/data_test.bin";
 
 TEST (Trait_1, int_insert_and_find) {
   using value_t = int;
@@ -176,7 +176,7 @@ TEST (custom_struct, trait_1) {
   using value_t = User;
   const int order = 10;
   BPlusTree <Trait, order> tree(header_path, data_path);
-  const int n_users = 20;
+  const int n_users = 100;
   std::vector <User> users;
   for (int id = 1; id <= n_users; id++) {
     User user;

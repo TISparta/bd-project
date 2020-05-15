@@ -1,3 +1,6 @@
+# persistency
+persistency/*.bin
+
 # executables
 test/bplustree-test
 
